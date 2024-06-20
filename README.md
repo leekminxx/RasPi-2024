@@ -37,3 +37,5 @@
 
 - 스위치 
     ![input](https://raw.githubusercontent.com/leekminxx/RasPi-2024/main/img/r002.png)
+
+- 피에조 부조 
