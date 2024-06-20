@@ -1,3 +1,8 @@
+# date : 2024-06-20
+# file : input01.py
+# desc : 스위치를 연결해서 누르면 pushed 가 출력
+
+
 import RPi.GPIO as GPIO
 import time
 
