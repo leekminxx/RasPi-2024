@@ -4,6 +4,7 @@
 - 키르히호프 법칙 
     - KVC(전압 법칙): 키르히호프 전압 법칙은 회로의 닫힌 루프에서 모든 전압 강하의 합이 0
     - KCL(전류 법칙): 키르히호프 전류 법칙은 회로의 임의의 접점에서 들어오는 전류의 합과 나가는 전류의 합이 같음
+    ![KCL](https://raw.githubusercontent.com/leekminxx/RasPi-2024/main/img/r001.png)
 
 - 전기회로 구조
     - 전류 ! : 모든 전류는 그라운드를 통해서 흐름 
@@ -33,3 +34,6 @@
 - VRGB
     - vcc : G , 에서 전류가 흘러옴 > 그라운드를 향해야 한바퀴를 돌아서 전류가 흐름 전원이 공급
     - R : Red색상을 켜기 위해선 R을 거쳐서 ground 로 향하면 됨 
+
+- 스위치 
+    ![input](https://raw.githubusercontent.com/leekminxx/RasPi-2024/main/img/r002.png)
