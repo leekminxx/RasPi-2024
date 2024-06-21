@@ -38,4 +38,54 @@
 - 스위치 
     ![input](https://raw.githubusercontent.com/leekminxx/RasPi-2024/main/img/r002.png)
 
+
+
 - 피에조 부조 
+2105
+
+
+## 2일차 
+- 적외선 인체감지 센서(PIR, Passive Infrated Sensor)
+    - 센서는 적외선을 감지하여 움직임을 감지하는 센서
+        - 핀 구성 3가지 
+            - VCC: 전원 공급 핀(보통 5V 또는 3.3V)
+            - GND: 접지 핀
+            - OUT: 출력 핀 (감지 신호 출력)
+        - 특징 
+            - 출력 신호: 디지털 출력 (High/Low 신호)
+    - 감도조절
+        - 인체감지 센서 코드에서 pull_up_down = GPIO.PUD_DOWN 코드사용하여 감도조절
+        - 모듈 앞에 노란색 조절기 돌리기 
+
+- 가상환경
+    - venv 모듈 사용
+        - 프로젝트 디텍토리 
+        - 가상환경을 생성 : python3 -m venv env
+        - 가상환경 활성화 : source ./env/bin/activate
+        - 가상환경을 실행하려면 : pip install RPi.GPIO 를 통해서 패키지 설치
+        - 가상환경을 빠져나오려면 : decativate
+
+- 초음파 센서 (HC-SR04 초음파 센서)
+ - 초음파를 방출하고 반사되어 돌아오는 시간을 측정하여 거리를 계산 (약 40KHz)
+ - 실내에서 측정할 경우 반사 물체가 너무 가깝거나 너무 멀리 있을 때 정확한 측정이 어려울 수 있음
+    - 작동원리
+        - 송신기 : 40KHz 영역대의 초음파를 방출 
+        - 수신시 : 송신기에서 방출된 초음파가 물체에 반사되어 수신기에 돌아온 시간을 통해 거리를 측정
+  - ![초음파센서 작동원리](https://raw.githubusercontent.com/leekminxx/RasPi-2024/main/img/r003.png)
+    - 라즈베리파이와 연결
+        - 필요한 부품:
+            - 라즈베리파이
+            - HC-SR04 초음파 센서
+            - 점퍼 케이블
+
+    - 핀 구성 4가지:
+        - VCC: 전원 입력 (5V)
+        - Trig: 트리거 핀, 초음파 신호를 보내는 핀
+        - Echo: 에코 핀, 반사된 신호를 수신하는 핀
+        - GND: 그라운드
+
+- 라즈베리파이 입출력 키트 확인 방법
+    - sudo ./build : WiringPi 라이브러리를 빌드 (관리자권한 실행)
+    - WiringPi Build script : WiringPi 라이브러리빌드를 실행 
+    - gpio -v : 설치된 WiringPi 의 버전을 확인 세부정보확인가능
+    - goio readall : GPIO 핀의 상태를 자세히 볼 수 있음 , 핀의 입출력 정보를 확인 할 수 있음
