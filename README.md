@@ -51,7 +51,7 @@
         - 다양한 음색을 출력가능 
         - tone() , noTone()함수를 사용
 
-    - [피에조 부저원리(압전효과)](https://raw.githubusercontent.com/leekminxx/RasPi-2024/main/img/r004.png)
+    - ![피에조 부저원리(압전효과)](https://raw.githubusercontent.com/leekminxx/RasPi-2024/main/img/r004.png)
 
 
 ## 2일차 
