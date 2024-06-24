@@ -1,7 +1,6 @@
 # date : 2024-06-24
 # file : step01.py
-# desc : 시그널 핸들링을통한 좀비 프로세스의 소멸
-
+# desc : 스테퍼모터제어를 위한 모터드라이버 코드
 import RPi.GPIO as GPIO
 import time
 
@@ -14,8 +13,8 @@ for step in steps:
 
 try:
     while True:
-        GPIO.output(steps[0], 1)
-        GPIO.output(steps[1], 0)
+        GPIO.output(steps[0], 1) #핀을 HIGH로 설정하고 나머지 핀들을 LOW로 설정하면서 첫 번째 스텝을 활성화
+        GPIO.output(steps[1], 0) #LOW(0) 모터를 반시계방향으로
         GPIO.output(steps[2], 0)
         GPIO.output(steps[3], 0)
         time.sleep(0.01)
