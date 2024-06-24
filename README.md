@@ -69,10 +69,11 @@
 - 가상환경
     - venv 모듈 사용
         - 프로젝트 디텍토리 
-        - 가상환경을 생성 : python3 -m venv env
-        - 가상환경 활성화 : source ./env/bin/activate
+        - 가상환경을 생성 : python3 -m venv env    | ex:python -m venv --system-site-packages env
+
+        - 가상환경 활성화 : source ./env/bin/activat
         - 가상환경을 실행하려면 : pip install RPi.GPIO 를 통해서 패키지 설치
-        - 가상환경을 빠져나오려면 : decativate
+        - 가상환경을 빠져나오려면 : deactivate
 
 - 초음파 센서 (HC-SR04 초음파 센서)
  - 초음파를 방출하고 반사되어 돌아오는 시간을 측정하여 거리를 계산 (약 40KHz)
@@ -131,11 +132,28 @@
         - 높은 반복 정밀도: 동일한 조건에서 반복적으로 같은 위치로 돌아올 수 있음
         - 개방 루프 제어: 피드백 시스템이 없이도 정밀하게 제어할 수 있음
     
-
 - 모터 드라이버 
  - ![모터 드라이버 아두이노](https://raw.githubusercontent.com/leekminxx/RasPi-2024/main/img/r007.png)
 
     - 모터 컨트롤에 많은 전류가 사용되기 때문에 드라이브 회로나 모듈을 거쳐서 전압 , 전류를 증폭시킨 다음 모터를 구동해야 하기 때문에 사용 
     - 작은 전류와 전압을 제어하는 프로세서와 큰 전류로 작동하는 모터 사이에 중재 역할을 하는 장치
-    - ![모터 드라이버](https://raw.githubusercontent.com/leekminxx/RasPi-2024/main/img/r006.png)
+    ![모터 드라이버](https://raw.githubusercontent.com/leekminxx/RasPi-2024/main/img/r006.png)
+
+- flask 부분 정리
+    - 파이썬으로 작성된 마이크로 웹 프레임워크 
+    - 웹 애플리케이션을 구축하는 데 필요한 핵심 기능을 제공 
+    - 단순 미니멀한 디자인
+    - 특정 도구나 라이브러리를 강요하지 않음
+    - 단순성 , 유연성 , 방대한문서로 python을 사용해 웹 애플리케이션과 API구축에 많이 사용됨 
+
+- Flask에서의 정적 라우팅 원리
+    - 정적 라우팅(Static Routing)
+        - URL 경로와 그에 따른 처리 함수(뷰 함수)를 명시적으로 정의하여 각 URL 요청에 대한 응답을 처리하는 방법
+            - Flask 애플리케이션 객체 생성: Flask(__name__)을 통해 Flask 애플리케이션 객체를 생성
+            - 서버 실행: if __name__ == "__main__": 블록에서 app.run()을 호출하여 웹 서버를 실행 이때 host와 port를 지정하여 서버가 동작할 주소와 포트를 설정할 수 있음
+
+    - request : 클라이언트로부터의 HTTP 요청에 대한 정보를 담고 있는 객체
+        - request : **클라이언트가 서버에 보낸 요청을 나타내는 객체** 가 필요함 
+    - 192.168.5.3:10011/?이름=홍길동&주소=부산 | 클라이언트가 서버로 값을 전송하는 형태
+    ![request방법](https://raw.githubusercontent.com/leekminxx/RasPi-2024/main/img/r008.png)
 
