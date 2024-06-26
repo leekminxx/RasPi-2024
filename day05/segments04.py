@@ -32,7 +32,7 @@ def display_digit(digit, position):
     for pin, state in zip(segment_pins, pattern):
         GPIO.output(pin, state)
     GPIO.output(com_pins[position], GPIO.LOW)  # 해당 자리수 활성화
-    time.sleep(0.005)
+    time.sleep(0.001)
     GPIO.output(com_pins[position], GPIO.HIGH)  # 해당 자리수 비활성화
 
 def display_number(number):
