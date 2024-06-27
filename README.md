@@ -71,7 +71,7 @@
         - 프로젝트 디텍토리 
         - 가상환경을 생성 : python3 -m venv env    | ex:python -m venv --system-site-packages env
 
-        - 가상환경 활성화 : source ./env/bin/activat
+        - 가상환경 활성화 : source ./env/bin/activate
         - 가상환경을 실행하려면 : pip install RPi.GPIO 를 통해서 패키지 설치
         - 가상환경을 빠져나오려면 : deactivate
 
@@ -174,3 +174,8 @@
     - 각 세그먼트는 'a'부터 'g'까지 라벨링 되어있음 7개의 세그먼트를 조합하여 만들어짐
         - 숫자 8은 모든 세그먼트가 켜지는것 1은 두개의 세그먼트만 
     ![세그먼트 회로도](https://raw.githubusercontent.com/leekminxx/RasPi-2024/main/img/r009.png)
+
+
+- vncserver-virtual vnc서버 가동
+
+- sudo apt install qttools5-dev-tools 큐티5 설치 
