@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>305</width>
-    <height>600</height>
+    <width>298</width>
+    <height>745</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="btn_2">
     <property name="geometry">
      <rect>
-      <x>150</x>
-      <y>100</y>
+      <x>140</x>
+      <y>40</y>
       <width>99</width>
       <height>30</height>
      </rect>
@@ -30,8 +30,8 @@
    <widget class="QPushButton" name="btn1_r">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>130</y>
+      <x>40</x>
+      <y>70</y>
       <width>99</width>
       <height>30</height>
      </rect>
@@ -43,8 +43,8 @@
    <widget class="QPushButton" name="btn1_g">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>160</y>
+      <x>40</x>
+      <y>100</y>
       <width>99</width>
       <height>30</height>
      </rect>
@@ -56,8 +56,8 @@
    <widget class="QPushButton" name="btn1_b">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>190</y>
+      <x>40</x>
+      <y>130</y>
       <width>99</width>
       <height>30</height>
      </rect>
@@ -69,8 +69,8 @@
    <widget class="QPushButton" name="btn_switch">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>100</y>
+      <x>40</x>
+      <y>40</y>
       <width>99</width>
       <height>30</height>
      </rect>
@@ -82,8 +82,8 @@
    <widget class="QLabel" name="label_led">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>70</y>
+      <x>100</x>
+      <y>10</y>
       <width>68</width>
       <height>22</height>
      </rect>
@@ -92,13 +92,111 @@
      <string>now :</string>
     </property>
    </widget>
+   <widget class="QDial" name="dial_led">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>70</y>
+      <width>91</width>
+      <height>81</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_sound">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>200</y>
+      <width>201</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Sound ON</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_song1">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>240</y>
+      <width>99</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_song2">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>240</y>
+      <width>99</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_song3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>270</y>
+      <width>99</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_song4">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>270</y>
+      <width>99</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
+    </property>
+   </widget>
+   <widget class="QDial" name="dial_sound">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>240</y>
+      <width>50</width>
+      <height>61</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_sound">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>200</y>
+      <width>71</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>efect</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>305</width>
+     <width>298</width>
      <height>28</height>
     </rect>
    </property>
