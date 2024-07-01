@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>446</width>
+    <width>718</width>
     <height>824</height>
    </rect>
   </property>
@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="btn_2">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>40</y>
+      <x>130</x>
+      <y>70</y>
       <width>99</width>
       <height>30</height>
      </rect>
@@ -30,8 +30,8 @@
    <widget class="QPushButton" name="btn1_r">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>70</y>
+      <x>30</x>
+      <y>100</y>
       <width>99</width>
       <height>30</height>
      </rect>
@@ -43,8 +43,8 @@
    <widget class="QPushButton" name="btn1_g">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>100</y>
+      <x>30</x>
+      <y>130</y>
       <width>99</width>
       <height>30</height>
      </rect>
@@ -56,8 +56,8 @@
    <widget class="QPushButton" name="btn1_b">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>130</y>
+      <x>30</x>
+      <y>160</y>
       <width>99</width>
       <height>30</height>
      </rect>
@@ -69,8 +69,8 @@
    <widget class="QPushButton" name="btn_switch">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>40</y>
+      <x>30</x>
+      <y>70</y>
       <width>99</width>
       <height>30</height>
      </rect>
@@ -82,21 +82,21 @@
    <widget class="QLabel" name="label_led">
     <property name="geometry">
      <rect>
-      <x>100</x>
-      <y>10</y>
-      <width>91</width>
+      <x>60</x>
+      <y>40</y>
+      <width>131</width>
       <height>22</height>
      </rect>
     </property>
     <property name="text">
-     <string>now :</string>
+     <string/>
     </property>
    </widget>
    <widget class="QDial" name="dial_led">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>80</y>
+      <x>130</x>
+      <y>110</y>
       <width>91</width>
       <height>81</height>
      </rect>
@@ -106,7 +106,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>200</y>
+      <y>400</y>
       <width>201</width>
       <height>30</height>
      </rect>
@@ -119,59 +119,59 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>240</y>
+      <y>440</y>
       <width>99</width>
       <height>30</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>song1</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btn_song2">
     <property name="geometry">
      <rect>
       <x>110</x>
-      <y>240</y>
+      <y>440</y>
       <width>99</width>
       <height>30</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>song2</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btn_song3">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>270</y>
+      <y>470</y>
       <width>99</width>
       <height>30</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>song3</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btn_song4">
     <property name="geometry">
      <rect>
       <x>110</x>
-      <y>270</y>
+      <y>470</y>
       <width>99</width>
       <height>30</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>song4</string>
     </property>
    </widget>
    <widget class="QDial" name="dial_sound">
     <property name="geometry">
      <rect>
       <x>230</x>
-      <y>240</y>
+      <y>440</y>
       <width>50</width>
       <height>61</height>
      </rect>
@@ -181,7 +181,7 @@
     <property name="geometry">
      <rect>
       <x>220</x>
-      <y>200</y>
+      <y>400</y>
       <width>71</width>
       <height>31</height>
      </rect>
@@ -194,7 +194,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>350</y>
+      <y>550</y>
       <width>421</width>
       <height>30</height>
      </rect>
@@ -207,19 +207,48 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>400</y>
+      <y>600</y>
       <width>421</width>
       <height>81</height>
      </rect>
     </property>
    </widget>
-   <widget class="QListView" name="listView">
+   <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>550</y>
-      <width>411</width>
-      <height>192</height>
+      <x>10</x>
+      <y>0</y>
+      <width>251</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:18pt; font-weight:600; font-style:italic; color:#ffff00;&quot;&gt;light controller&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="textFormat">
+     <enum>Qt::AutoText</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>60</y>
+      <width>141</width>
+      <height>201</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:18pt; font-weight:600; font-style:italic; color:#ffff00;&quot;&gt;sound controller&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="lcdNumber_Temp">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>300</y>
+      <width>291</width>
+      <height>131</height>
      </rect>
     </property>
    </widget>
@@ -229,7 +258,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>446</width>
+     <width>718</width>
      <height>28</height>
     </rect>
    </property>

@@ -1,18 +1,24 @@
+
+# 리스트뷰 떄문에 import 다시 시키기
+
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
-from PyQt5.QtCore import QTimer, QThread, pyqtSignal
+from PyQt5.QtCore import QTimer, QThread, pyqtSignal, QStandardItemModel, QStandardItem
 from PyQt5.QtGui import QColor
 import sys
 import RPi.GPIO as GPIO
 import time
+import adafruit_dht
+import board
 
-# GPIO 핀 설정
+# GPIO 설정
 red = 25
 green = 19
 blue = 26
 piezoPin = 4
 trigPin = 27
 echoPin = 17
+sensor_pin = 20
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
@@ -22,7 +28,9 @@ GPIO.setup(blue, GPIO.OUT)
 GPIO.setup(piezoPin, GPIO.OUT)
 GPIO.setup(trigPin, GPIO.OUT)
 GPIO.setup(echoPin, GPIO.IN)
+GPIO.setup(sensor_pin, GPIO.IN)
 
+dhtDevice = adafruit_dht.DHT11(board.D18)  # DHT11 센서 설정
 # PWM 설정
 pwm_red = GPIO.PWM(red, 100)  # Red LED, 100 Hz
 pwm_green = GPIO.PWM(green, 100)  # Green LED, 100 Hz
@@ -56,6 +64,30 @@ class UltrasonicThread(QThread):
             self.distance_measured.emit(distance)
             time.sleep(1)
 
+class DHTThread(QThread):
+
+    temp_measured = pyqtSignal(float)
+    humid_measured = pyqtSignal(float)
+
+    def __init__(self):
+        super().__init__()
+
+    def run(self):
+        while True:
+            try:
+                temp = dhtDevice.temperature
+                humid = dhtDevice.humidity
+                print(f'Temp: {temp}C / Humidity: {humid}%')
+                self.temp_measured.emit(temp)
+                self.humid_measured.emit(humid)
+                time.sleep(2)
+            except RuntimeError as error:
+                print(f'Runtime error occurred: {error}')
+                time.sleep(2)
+            except Exception as error:
+                print(f'Error occurred: {error}')
+                time.sleep(2)
+
 class WindowClass(QMainWindow, form_class):
     def __init__(self):
         super().__init__()
@@ -83,46 +115,55 @@ class WindowClass(QMainWindow, form_class):
         self.ultrasonic_thread.distance_measured.connect(self.handleDistance)
         self.ultrasonic_thread.start()
 
+        self.dht_thread = DHTThread()
+        self.dht_thread.temp_measured.connect(self.updateTemp)
+        self.dht_thread.humid_measured.connect(self.updateHumid)
+        self.dht_thread.start()
+
         self.current_led = None
         self.turnOffLED()
-        
-        # 버튼 초기 설정
+    
+        # 버튼 초기화
         self.btn1_r.setStyleSheet("background-color: red")
         self.btn1_g.setStyleSheet("background-color: green")
         self.btn1_b.setStyleSheet("background-color: blue")
+
+        # 리스트 뷰 모델 초기화
+        self.temp_humid_model = QStandardItemModel(self.listView_Temp)
+        self.listView_Temp.setModel(self.temp_humid_model)
     
     def turnOnRed(self):
-        self.stopAllPWMs()  # 모든 PWM 정지
-        pwm_red.start(100)  # Red LED PWM 시작
-        pwm_green.stop()    # Green LED 정지
-        pwm_blue.stop()     # Blue LED 정지
-        GPIO.output(red, GPIO.LOW)    # Red LED 켜기
-        GPIO.output(green, GPIO.HIGH) # Green LED 끄기
-        GPIO.output(blue, GPIO.HIGH)  # Blue LED 끄기
+        self.stopAllPWMs()
+        pwm_red.start(100)
+        pwm_green.stop()
+        pwm_blue.stop()
+        GPIO.output(red, GPIO.LOW)
+        GPIO.output(green, GPIO.HIGH)
+        GPIO.output(blue, GPIO.HIGH)
         self.updateLabel("Red", QColor(255, 0, 0))
-				#self.current_led = pwm_red
+        self.current_led = pwm_red
 
     def turnOnGreen(self):
-        self.stopAllPWMs()  # 모든 PWM 정지
-        pwm_red.stop()      # Red LED 정지
-        pwm_green.start(100)  # Green LED PWM 시작
-        pwm_blue.stop()     # Blue LED 정지
-        GPIO.output(red, GPIO.HIGH)   # Red LED 끄기
-        GPIO.output(green, GPIO.LOW)  # Green LED 켜기
-        GPIO.output(blue, GPIO.HIGH)  # Blue LED 끄기
+        self.stopAllPWMs()
+        pwm_red.stop()
+        pwm_green.start(100)
+        pwm_blue.stop()
+        GPIO.output(red, GPIO.HIGH)
+        GPIO.output(green, GPIO.LOW)
+        GPIO.output(blue, GPIO.HIGH)
         self.updateLabel("Green", QColor(0, 255, 0))
-        #self.current_led = pwm_green
+        self.current_led = pwm_green
 
     def turnOnBlue(self):
-        self.stopAllPWMs()  # 모든 PWM 정지
-        pwm_red.stop()      # Red LED 정지
-        pwm_green.stop()    # Green LED 정지
-        pwm_blue.start(100) # Blue LED PWM 시작
-        GPIO.output(red, GPIO.HIGH)   # Red LED 끄기
-        GPIO.output(green, GPIO.HIGH) # Green LED 끄기
-        GPIO.output(blue, GPIO.LOW)   # Blue LED 켜기
+        self.stopAllPWMs()
+        pwm_red.stop()
+        pwm_green.stop()
+        pwm_blue.start(100)
+        GPIO.output(red, GPIO.HIGH)
+        GPIO.output(green, GPIO.HIGH)
+        GPIO.output(blue, GPIO.LOW)
         self.updateLabel("Blue", QColor(0, 0, 255))
-        #self.current_led = pwm_blue
+        self.current_led = pwm_blue
 
     def turnOffLED(self):
         self.timer.stop()
@@ -150,7 +191,7 @@ class WindowClass(QMainWindow, form_class):
 
     def dialValueChanged(self, value):
         value = int(value)
-        self.label_led.setText(f"{self.current_led}: {str(value)}")
+        self.label_led.setText(f"{str(value)}")
 
         if self.current_led:
             self.current_led.ChangeDutyCycle(value)
@@ -163,11 +204,11 @@ class WindowClass(QMainWindow, form_class):
     def togglePiezo(self):
         if pwm_piezo.is_started:
             pwm_piezo.stop()
-            self.btn_sound.setText("소리 시작")
+            self.btn_sound.setText("부저 시작")
             self.updateSoundLabel(0)
         else:
             pwm_piezo.start(int(self.dial_sound.value()))
-            self.btn_sound.setText("소리 정지")
+            self.btn_sound.setText("부저 정지")
             self.updateSoundLabel(int(self.dial_sound.value()))
 
     def updateLabel(self, color_name, color):
@@ -192,9 +233,8 @@ class WindowClass(QMainWindow, form_class):
         else:
             pwm_piezo.stop()
             self.stopAllPWMs()
-            self.btn_sound.setText("소리 시작")
+            self.btn_sound.setText("부저 시작")
             self.updateSoundLabel(0)
-            #self.turnOffLED()
 
     def blinkRed(self):
         GPIO.output(red, GPIO.LOW)
@@ -219,8 +259,19 @@ class WindowClass(QMainWindow, form_class):
         pwm_green.stop()
         pwm_blue.stop()
 
+    def updateTemp(self, temp):
+        self.lcdNumber_temp.display(temp)
+        item = QStandardItem(f'온도: {temp}도')
+        self.temp_humid_model.appendRow(item)
+
+    def updateHumid(self, humid):
+        self.lcdNumber_humid.display(humid)
+        item = QStandardItem(f'습도: {humid}%')
+        self.temp_humid_model.appendRow(item)
+
     def closeEvent(self, event):
         self.ultrasonic_thread.terminate()
+        self.dht_thread.terminate()
         GPIO.cleanup()
         event.accept()
 
