@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>960</width>
-    <height>474</height>
+    <width>915</width>
+    <height>478</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -53,7 +53,7 @@
      <string>Blue</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btnOff">
+   <widget class="QPushButton" name="btnLedOff">
     <property name="geometry">
      <rect>
       <x>130</x>
@@ -66,7 +66,7 @@
      <string>OFF</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btnMeasureDistance">
+   <widget class="QPushButton" name="btnDistance">
     <property name="geometry">
      <rect>
       <x>340</x>
@@ -79,7 +79,7 @@
      <string>distance</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btnStopMeasure">
+   <widget class="QPushButton" name="btnStop">
     <property name="geometry">
      <rect>
       <x>450</x>
@@ -131,50 +131,37 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:22pt; font-weight:600; font-style:italic; color:#828282;&quot;&gt;Distance&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QListView" name="listView">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>670</x>
-      <y>290</y>
-      <width>256</width>
-      <height>121</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QPushButton" name="Stbtn">
     <property name="geometry">
      <rect>
-      <x>690</x>
-      <y>250</y>
+      <x>660</x>
+      <y>260</y>
       <width>99</width>
       <height>30</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Start</string>
     </property>
    </widget>
    <widget class="QPushButton" name="Spbtn">
     <property name="geometry">
      <rect>
-      <x>800</x>
-      <y>250</y>
+      <x>770</x>
+      <y>260</y>
       <width>99</width>
       <height>30</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Stop</string>
     </property>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>20</y>
+      <x>610</x>
+      <y>10</y>
       <width>241</width>
       <height>221</height>
      </rect>
@@ -183,7 +170,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>../../../Users/user/Downloads/free-icon-temperature-3815449.png</pixmap>
+     <pixmap>img/free-icon-temperature-3815449.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -202,7 +189,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>../../../Users/user/Downloads/free-icon-rgb-5433006.png</pixmap>
+     <pixmap>img/free-icon-rgb-5433006.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -221,10 +208,30 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>../../../Users/user/Downloads/free-icon-ultrasonic-sensor-11298720.png</pixmap>
+     <pixmap>img/free-icon-ultrasonic-sensor-11298720.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="lcdTemperature">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>310</y>
+      <width>201</width>
+      <height>51</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="lcdHumidity">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>360</y>
+      <width>201</width>
+      <height>51</height>
+     </rect>
     </property>
    </widget>
   </widget>
@@ -233,8 +240,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>960</width>
-     <height>21</height>
+     <width>915</width>
+     <height>28</height>
     </rect>
    </property>
   </widget>
