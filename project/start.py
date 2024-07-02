@@ -1,11 +1,12 @@
 from PyQt5.QtWidgets import *
-from PyQt5 import uic, QtGui  # QtGui 모듈 추가
+from PyQt5 import uic
 from PyQt5.QtCore import QTimer, QThread, pyqtSignal
+from PyQt5.QtGui import QColor
 import sys
 import RPi.GPIO as GPIO
 import time
 
-# GPIO 설정
+# GPIO ?ㅼ젙
 red = 25
 green = 19
 blue = 26
@@ -22,8 +23,7 @@ GPIO.setup(piezoPin, GPIO.OUT)
 GPIO.setup(trigPin, GPIO.OUT)
 GPIO.setup(echoPin, GPIO.IN)
 
-dhtDevice = adafruit_dht.DHT11(board.D18)  # DHT11 센서 설정
-# PWM 설정
+# PWM ?ㅼ젙
 pwm_red = GPIO.PWM(red, 100)  # Red LED, 100 Hz
 pwm_green = GPIO.PWM(green, 100)  # Green LED, 100 Hz
 pwm_blue = GPIO.PWM(blue, 100)  # Blue LED, 100 Hz
@@ -36,6 +36,7 @@ class UltrasonicThread(QThread):
 
     def __init__(self):
         super().__init__()
+        self.running = False
 
     def run(self):
         while True:
@@ -55,6 +56,9 @@ class UltrasonicThread(QThread):
 
             self.distance_measured.emit(distance)
             time.sleep(1)
+    def stop(self):
+        self.running = False
+        self.wait() 
 
 class WindowClass(QMainWindow, form_class):
     def __init__(self):
@@ -66,11 +70,13 @@ class WindowClass(QMainWindow, form_class):
         self.btn1_b.clicked.connect(self.turnOnBlue)
         self.btn_switch.clicked.connect(self.toggleCycling)
         self.btn_sound.clicked.connect(self.togglePiezo)
-
+        self.btn_dis_on.clicked.connect(self.startUltrasonic)
+        self.btn_dis_off.clicked.connect(self.stopUltrasonic)
+        
         self.dial_led.valueChanged.connect(self.dialValueChanged)
         self.dial_sound.valueChanged.connect(self.soundDialValueChanged)
 
-        self.label_led.setText("0")
+        self.label_led.setText("")
         self.label_sound.setText("0")
 
         self.timer = QTimer(self)
@@ -81,22 +87,15 @@ class WindowClass(QMainWindow, form_class):
 
         self.ultrasonic_thread = UltrasonicThread()
         self.ultrasonic_thread.distance_measured.connect(self.handleDistance)
-        self.ultrasonic_thread.start()
-
-        self.dht_thread = DHTThread()
-        self.dht_thread.temp_measured.connect(self.updateTemp)
-        self.dht_thread.humid_measured.connect(self.updateHumid)
-        self.dht_thread.start()
 
         self.current_led = None
         self.turnOffLED()
-
-        # 버튼 초기화
+    
+        # 踰꾪듉 ?됱긽 ?ㅼ젙
         self.btn1_r.setStyleSheet("background-color: red")
         self.btn1_g.setStyleSheet("background-color: green")
         self.btn1_b.setStyleSheet("background-color: blue")
-
- 
+    
     def turnOnRed(self):
         self.stopAllPWMs()
         pwm_red.start(100)
@@ -167,13 +166,13 @@ class WindowClass(QMainWindow, form_class):
         pwm_piezo.start(volume)
 
     def togglePiezo(self):
-        if pwm_piezo.is_started:
+        if pwm_piezo.is_running():
             pwm_piezo.stop()
-            self.btn_sound.setText("부저 시작")
+            self.btn_sound.setText("Buzzer Start")
             self.updateSoundLabel(0)
         else:
             pwm_piezo.start(int(self.dial_sound.value()))
-            self.btn_sound.setText("부저 정지")
+            self.btn_sound.setText("Buzzer Stop")
             self.updateSoundLabel(int(self.dial_sound.value()))
 
     def updateLabel(self, color_name, color):
@@ -183,7 +182,15 @@ class WindowClass(QMainWindow, form_class):
     def updateSoundLabel(self, volume):
         self.label_sound.setText(str(volume))
 
+    def startUltrasonic(self):
+        self.ultrasonic_thread.start()
+
+    def stopUltrasonic(self):
+        self.ultrasonic_thread.stop()
+        self.pwm_piezo.stop()
+
     def handleDistance(self, distance):
+        self.running = True
         self.lcdNumber_dis.display(distance)
 
         if distance <= 10:
@@ -197,8 +204,7 @@ class WindowClass(QMainWindow, form_class):
             self.blinkBlue()
         else:
             pwm_piezo.stop()
-            self.stopAllPWMs()
-            self.btn_sound.setText("부저 시작")
+            self.btn_sound.setText("Buzzer Start")
             self.updateSoundLabel(0)
 
     def blinkRed(self):
@@ -224,9 +230,14 @@ class WindowClass(QMainWindow, form_class):
         pwm_green.stop()
         pwm_blue.stop()
 
+    def updateTemp(self, temp):
+        self.lcdNumber_temp.display(temp)
+
+    def updateHumid(self, humid):
+        self.lcdNumber_humid.display(humid)
+
     def closeEvent(self, event):
         self.ultrasonic_thread.terminate()
-        self.dht_thread.terminate()
         GPIO.cleanup()
         event.accept()
 

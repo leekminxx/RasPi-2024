@@ -1,14 +1,15 @@
 from PyQt5.QtWidgets import *
-from PyQt5 import uic, QtGui  # QtGui 모듈 추가
+from PyQt5 import uic
 from PyQt5.QtCore import QTimer, QThread, pyqtSignal
+from PyQt5.QtGui import QColor
 import sys
 import RPi.GPIO as GPIO
 import time
 
 # GPIO 설정
 red = 25
-green = 19
-blue = 26
+green = 5
+blue = 6
 piezoPin = 4
 trigPin = 27
 echoPin = 17
@@ -22,7 +23,6 @@ GPIO.setup(piezoPin, GPIO.OUT)
 GPIO.setup(trigPin, GPIO.OUT)
 GPIO.setup(echoPin, GPIO.IN)
 
-dhtDevice = adafruit_dht.DHT11(board.D18)  # DHT11 센서 설정
 # PWM 설정
 pwm_red = GPIO.PWM(red, 100)  # Red LED, 100 Hz
 pwm_green = GPIO.PWM(green, 100)  # Green LED, 100 Hz
@@ -83,20 +83,14 @@ class WindowClass(QMainWindow, form_class):
         self.ultrasonic_thread.distance_measured.connect(self.handleDistance)
         self.ultrasonic_thread.start()
 
-        self.dht_thread = DHTThread()
-        self.dht_thread.temp_measured.connect(self.updateTemp)
-        self.dht_thread.humid_measured.connect(self.updateHumid)
-        self.dht_thread.start()
-
         self.current_led = None
         self.turnOffLED()
 
-        # 버튼 초기화
+        # 초기 LED 버튼 배경색 설정
         self.btn1_r.setStyleSheet("background-color: red")
         self.btn1_g.setStyleSheet("background-color: green")
         self.btn1_b.setStyleSheet("background-color: blue")
 
- 
     def turnOnRed(self):
         self.stopAllPWMs()
         pwm_red.start(100)
@@ -156,7 +150,7 @@ class WindowClass(QMainWindow, form_class):
 
     def dialValueChanged(self, value):
         value = int(value)
-        self.label_led.setText(f"{str(value)}")
+        self.label_led.setText(f"{value}")
 
         if self.current_led:
             self.current_led.ChangeDutyCycle(value)
@@ -167,13 +161,13 @@ class WindowClass(QMainWindow, form_class):
         pwm_piezo.start(volume)
 
     def togglePiezo(self):
-        if pwm_piezo.is_started:
+        if pwm_piezo.is_running():
             pwm_piezo.stop()
-            self.btn_sound.setText("부저 시작")
+            self.btn_sound.setText("소리 켜기")
             self.updateSoundLabel(0)
         else:
             pwm_piezo.start(int(self.dial_sound.value()))
-            self.btn_sound.setText("부저 정지")
+            self.btn_sound.setText("소리 끄기")
             self.updateSoundLabel(int(self.dial_sound.value()))
 
     def updateLabel(self, color_name, color):
@@ -198,7 +192,7 @@ class WindowClass(QMainWindow, form_class):
         else:
             pwm_piezo.stop()
             self.stopAllPWMs()
-            self.btn_sound.setText("부저 시작")
+            self.btn_sound.setText("소리 켜기")
             self.updateSoundLabel(0)
 
     def blinkRed(self):
@@ -226,7 +220,6 @@ class WindowClass(QMainWindow, form_class):
 
     def closeEvent(self, event):
         self.ultrasonic_thread.terminate()
-        self.dht_thread.terminate()
         GPIO.cleanup()
         event.accept()
 

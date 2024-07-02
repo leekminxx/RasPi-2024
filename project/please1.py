@@ -1,11 +1,10 @@
 from PyQt5.QtWidgets import *
-from PyQt5 import uic, QtGui  # QtGui 모듈 추가
+from PyQt5 import uic
 from PyQt5.QtCore import QTimer, QThread, pyqtSignal
+from PyQt5.QtGui import QColor
 import sys
 import RPi.GPIO as GPIO
 import time
-import adafruit_dht
-import board
 
 # GPIO 설정
 red = 25
@@ -14,7 +13,6 @@ blue = 26
 piezoPin = 4
 trigPin = 27
 echoPin = 17
-sensor_pin = 20
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
@@ -24,9 +22,8 @@ GPIO.setup(blue, GPIO.OUT)
 GPIO.setup(piezoPin, GPIO.OUT)
 GPIO.setup(trigPin, GPIO.OUT)
 GPIO.setup(echoPin, GPIO.IN)
-GPIO.setup(sensor_pin, GPIO.IN)
 
-dhtDevice = adafruit_dht.DHT11(board.D18)  # DHT11 센서 설정
+
 # PWM 설정
 pwm_red = GPIO.PWM(red, 100)  # Red LED, 100 Hz
 pwm_green = GPIO.PWM(green, 100)  # Green LED, 100 Hz
@@ -60,30 +57,6 @@ class UltrasonicThread(QThread):
             self.distance_measured.emit(distance)
             time.sleep(1)
 
-class DHTThread(QThread):
-
-    temp_measured = pyqtSignal(float)
-    humid_measured = pyqtSignal(float)
-
-    def __init__(self):
-        super().__init__()
-
-    def run(self):
-        while True:
-            try:
-                temp = dhtDevice.temperature
-                humid = dhtDevice.humidity
-                print(f'Temp: {temp}C / Humidity: {humid}%')
-                self.temp_measured.emit(temp)
-                self.humid_measured.emit(humid)
-                time.sleep(2)
-            except RuntimeError as error:
-                print(f'Runtime error occurred: {error}')
-                time.sleep(2)
-            except Exception as error:
-                print(f'Error occurred: {error}')
-                time.sleep(2)
-
 class WindowClass(QMainWindow, form_class):
     def __init__(self):
         super().__init__()
@@ -98,7 +71,7 @@ class WindowClass(QMainWindow, form_class):
         self.dial_led.valueChanged.connect(self.dialValueChanged)
         self.dial_sound.valueChanged.connect(self.soundDialValueChanged)
 
-        self.label_led.setText("0")
+        self.label_led.setText("")
         self.label_sound.setText("0")
 
         self.timer = QTimer(self)
@@ -111,22 +84,13 @@ class WindowClass(QMainWindow, form_class):
         self.ultrasonic_thread.distance_measured.connect(self.handleDistance)
         self.ultrasonic_thread.start()
 
-        self.dht_thread = DHTThread()
-        self.dht_thread.temp_measured.connect(self.updateTemp)
-        self.dht_thread.humid_measured.connect(self.updateHumid)
-        self.dht_thread.start()
-
         self.current_led = None
         self.turnOffLED()
     
-        # 버튼 초기화
+        # 버튼 색상 설정
         self.btn1_r.setStyleSheet("background-color: red")
         self.btn1_g.setStyleSheet("background-color: green")
         self.btn1_b.setStyleSheet("background-color: blue")
-
-        # 리스트 뷰 모델 초기화
-        self.temp_humid_model = QtGui.QStandardItemModel(self.listView_Temp)  # QtGui.QStandardItemModel 사용
-        self.listView_Temp.setModel(self.temp_humid_model)
     
     def turnOnRed(self):
         self.stopAllPWMs()
@@ -198,13 +162,13 @@ class WindowClass(QMainWindow, form_class):
         pwm_piezo.start(volume)
 
     def togglePiezo(self):
-        if pwm_piezo.is_started:
+        if pwm_piezo.is_running():
             pwm_piezo.stop()
-            self.btn_sound.setText("부저 시작")
+            self.btn_sound.setText("Buzzer Start")
             self.updateSoundLabel(0)
         else:
             pwm_piezo.start(int(self.dial_sound.value()))
-            self.btn_sound.setText("부저 정지")
+            self.btn_sound.setText("Buzzer Stop")
             self.updateSoundLabel(int(self.dial_sound.value()))
 
     def updateLabel(self, color_name, color):
@@ -228,8 +192,8 @@ class WindowClass(QMainWindow, form_class):
             self.blinkBlue()
         else:
             pwm_piezo.stop()
-            self.stopAllPWMs()
-            self.btn_sound.setText("부저 시작")
+            #self.stopAllPWMs()
+            self.btn_sound.setText("Buzzer Start")
             self.updateSoundLabel(0)
 
     def blinkRed(self):
@@ -257,17 +221,13 @@ class WindowClass(QMainWindow, form_class):
 
     def updateTemp(self, temp):
         self.lcdNumber_temp.display(temp)
-        item = QtGui.QStandardItem(f'온도: {temp}도')  # QtGui.QStandardItem 사용
-        self.temp_humid_model.appendRow(item)
 
     def updateHumid(self, humid):
         self.lcdNumber_humid.display(humid)
-        item = QtGui.QStandardItem(f'습도: {humid}%')  # QtGui.QStandardItem 사용
-        self.temp_humid_model.appendRow(item)
 
     def closeEvent(self, event):
-        self.ultrasonic_thread.terminate()
-        self.dht_thread.terminate()
+        self.ultrasonic_thread.quit()
+        self.dht_thread.quit()
         GPIO.cleanup()
         event.accept()
 
@@ -276,4 +236,3 @@ if __name__ == "__main__":
     myWindow = WindowClass()
     myWindow.show()
     app.exec_()
-
