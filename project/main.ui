@@ -131,7 +131,7 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:22pt; font-weight:600; font-style:italic; color:#828282;&quot;&gt;Distance&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="Stbtn">
+   <widget class="QPushButton" name="btnStartDht">
     <property name="geometry">
      <rect>
       <x>660</x>
@@ -144,7 +144,7 @@
      <string>Start</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="Spbtn">
+   <widget class="QPushButton" name="btnStopDht">
     <property name="geometry">
      <rect>
       <x>770</x>
