@@ -179,3 +179,17 @@
 - vncserver-virtual vnc서버 가동
 
 - sudo apt install qttools5-dev-tools 큐티5 설치 
+
+
+## miniproject
+- Rasberry Pi 를 이용하여 하드웨어 구성요소를 제어하고 모니터링 하는 개발
+- PyQt를 사용하여 인터페이스를 구축 LED , 초음파센서 , 부저 , DHT11온습도 센서를 상호작용시켜구현
+
+    - LED 
+
+    - 초음파센서
+
+    - 부저 
+
+    - DHT11 온습도 센서 
+    
